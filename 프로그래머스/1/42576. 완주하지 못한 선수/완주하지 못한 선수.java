@@ -1,18 +1,26 @@
-import java.util.Arrays;
+import java.util.HashMap;
 
 class Solution {
     public String solution(String[] participant, String[] completion) {
         String answer = "";
-        // 배열 정렬(오름차순)
-        Arrays.sort(participant);
-        Arrays.sort(completion);
+        HashMap<String, Integer> map = new HashMap<>();
         
-        for(int i = 0; i < completion.length; i++) {
-            if(!participant[i].equals(completion[i])) {
-                return participant[i]; //불일치 발생 시 반환
+        // 참가자 저장(값 증가)
+        for (String p : participant) {
+            map.put(p, map.getOrDefault(p, 0) + 1);
+        }
+        // 완주자 제거(값 감소)
+        for (String c : completion) {
+            map.put(c, map.get(c) - 1);
+        }
+        
+        // 완주하지 못한 참가자 반환 (값이 0이 아닌 경우)
+        for (String key : map.keySet()) {
+            if (map.get(key) > 0) {
+                return key;
             }
         }
-        // 순회하는 동안 불일치가 없으면 마지막 참가자가 반환
-        return participant[participant.length - 1];
+
+        return answer;
     }
 }
